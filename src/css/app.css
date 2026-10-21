@@ -12,7 +12,7 @@ body.size-l { --tile: 156px; --icon: 92px; }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
-body { color: var(--ink); font: 14px/1.35 system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, sans-serif; user-select: none; -webkit-user-select: none; }
+body { color: var(--ink); font: 14px/1.35 var(--ui-font); user-select: none; -webkit-user-select: none; }
 #backdrop {
   position: fixed;
   inset: 0;
@@ -42,7 +42,8 @@ body.opening main { animation: open 0.22s ease-out both; }
   background-repeat: no-repeat;
   background-position: 13px 50%;
 }
-#q:focus { border-color: rgba(255, 255, 255, 0.35); background-color: rgba(255, 255, 255, 0.16); }
+#q { transition: border-color 0.2s, background-color 0.2s, box-shadow 0.25s var(--ui-ease); backdrop-filter: blur(14px); box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.8); }
+#q:focus { border-color: rgba(255, 255, 255, 0.3); background-color: rgba(255, 255, 255, 0.16); box-shadow: 0 0 0 4px rgba(122, 167, 255, 0.18), 0 10px 30px -18px rgba(0, 0, 0, 0.8); }
 #q::placeholder { color: var(--muted); }
 
 .calc {
@@ -74,9 +75,11 @@ body.opening main { animation: open 0.22s ease-out both; }
   border-radius: 18px;
   cursor: default;
   padding: 6px;
-  transition: transform 0.12s, opacity 0.12s, background 0.12s;
+  transition: transform 0.25s var(--ui-ease), opacity 0.2s, background 0.2s;
 }
 .tile:hover { background: rgba(255, 255, 255, 0.06); }
+.tile:hover .ic { transform: translateY(-2px) scale(1.04); }
+.tile .ic { transition: transform 0.3s var(--ui-ease); }
 .tile.sel { background: rgba(255, 255, 255, 0.14); }
 .tile:active { transform: scale(0.95); }
 .tile .ic { width: var(--icon); height: var(--icon); border-radius: 22%; display: grid; place-items: center; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35)); }
@@ -116,14 +119,14 @@ body.nolabels .tile .name { display: none; }
 .web button { font: inherit; color: var(--ink); background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
 
 #dots { display: flex; gap: 9px; height: 18px; align-items: center; }
-#dots button { width: 8px; height: 8px; padding: 0; border-radius: 50%; border: 0; background: rgba(255, 255, 255, 0.35); cursor: pointer; }
-#dots button.on { background: #fff; }
+#dots button { transition: background 0.2s, width 0.3s var(--ui-ease); width: 8px; height: 8px; padding: 0; border-radius: 50%; border: 0; background: rgba(255, 255, 255, 0.35); cursor: pointer; }
+#dots button.on { background: #fff; width: 20px; border-radius: 4px; }
 .gear { position: fixed; right: 18px; bottom: 16px; font-size: 18px; color: var(--muted); background: transparent; border: 0; cursor: pointer; padding: 6px 9px; border-radius: 9px; }
 .gear:hover { color: var(--ink); background: rgba(255, 255, 255, 0.1); }
 
-.panel { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(0, 0, 0, 0.25); z-index: 10; }
-.panel-card { background: rgba(40, 44, 58, 0.86); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 28px; padding: 18px 24px 22px; animation: pop 0.2s ease-out both; max-width: 92vw; }
-@keyframes pop { from { transform: scale(0.9); opacity: 0; } }
+.panel { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(6px); z-index: 10; animation: ui-in 0.2s both; }
+.panel-card { background: rgba(40, 44, 58, 0.86); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 28px; padding: 18px 24px 22px; animation: pop 0.32s var(--ui-ease) both; box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7); max-width: 92vw; }
+@keyframes pop { from { transform: scale(0.94); opacity: 0; } }
 .panel-title { display: block; margin: 0 auto 2px; text-align: center; font: inherit; font-size: 22px; font-weight: 650; color: var(--ink); background: transparent; border: 1px solid transparent; border-radius: 10px; padding: 4px 10px; user-select: text; }
 .panel-title:hover, .panel-title:focus { border-color: rgba(255, 255, 255, 0.25); outline: none; }
 .panel-hint { text-align: center; color: var(--muted); margin: 0 0 8px; font-size: 12.5px; }
@@ -133,31 +136,44 @@ body.nolabels .tile .name { display: none; }
 .tile .x { position: absolute; top: 2px; left: calc(50% - var(--icon) / 2 - 10px); width: 22px; height: 22px; border-radius: 50%; border: 0; background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 11px; cursor: pointer; display: none; }
 .panel .tile:hover .x { display: block; }
 
-.menu { position: fixed; z-index: 30; min-width: 200px; background: rgba(36, 40, 54, 0.96); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 12px; padding: 5px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45); }
+.menu { position: fixed; z-index: 30; min-width: 200px; background: rgba(36, 40, 54, 0.96); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 12px; padding: 5px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45); backdrop-filter: blur(18px); animation: menu-in 0.16s var(--ui-ease) both; transform-origin: top left; }
+@keyframes menu-in { from { opacity: 0; transform: scale(0.96); } }
 .menu button { display: block; width: 100%; text-align: left; font: inherit; color: var(--ink); background: transparent; border: 0; border-radius: 8px; padding: 7px 12px; cursor: pointer; }
 .menu button:hover { background: rgba(122, 167, 255, 0.25); }
 .menu hr { border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 4px 6px; }
 .menu small { display: block; color: var(--muted); padding: 4px 12px 2px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; }
 
-.toast { position: fixed; left: 50%; bottom: 52px; transform: translateX(-50%); background: rgba(36, 40, 54, 0.96); border: 1px solid rgba(255, 255, 255, 0.14); padding: 8px 16px; border-radius: 999px; z-index: 40; }
+.toast { position: fixed; left: 50%; bottom: 52px; transform: translateX(-50%); background: rgba(36, 40, 54, 0.96); border: 1px solid rgba(255, 255, 255, 0.14); padding: 8px 16px; border-radius: 999px; z-index: 40; backdrop-filter: blur(18px); box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.6); animation: toast-in 0.3s var(--ui-ease) both; }
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 8px); } }
 
-.settings { position: fixed; top: 0; right: 0; bottom: 0; width: min(360px, 92vw); background: rgba(30, 33, 45, 0.97); border-left: 1px solid rgba(255, 255, 255, 0.12); padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; overflow: auto; z-index: 20; animation: slide 0.2s ease-out both; }
-@keyframes slide { from { transform: translateX(40px); opacity: 0; } }
-.settings header { display: flex; justify-content: space-between; align-items: center; font-size: 17px; }
-.settings .x { background: transparent; border: 0; color: var(--muted); font-size: 16px; cursor: pointer; }
-.settings label { display: grid; gap: 6px; color: var(--muted); }
-.settings label.check { display: flex; align-items: center; gap: 10px; color: var(--ink); }
-.settings select { font: inherit; color: var(--ink); background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 9px; padding: 7px 9px; }
+.settings { position: fixed; top: 12px; right: 12px; bottom: 12px; width: min(380px, calc(100vw - 24px)); background: rgba(22, 25, 35, 0.9); backdrop-filter: blur(24px) saturate(1.3); -webkit-backdrop-filter: blur(24px) saturate(1.3); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7); padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 12px; overflow: auto; z-index: 20; animation: slide 0.32s var(--ui-ease) both; user-select: none; }
+@keyframes slide { from { transform: translateX(24px); opacity: 0; } }
+.settings header { display: flex; align-items: center; gap: 12px; padding: 0 2px 4px; }
+.settings header img { width: 38px; height: 38px; border-radius: 10px; box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.6); }
+.settings header div { flex: 1; }
+.settings header b { display: block; font-size: 16px; letter-spacing: -0.01em; }
+.settings header small { color: var(--muted); font-size: 12.5px; }
+.settings .x { width: 30px; height: 30px; display: grid; place-items: center; background: transparent; border: 0; border-radius: 8px; color: var(--muted); font-size: 13px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.settings .x:hover { background: rgba(255, 255, 255, 0.08); color: var(--ink); }
+.settings .group { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 14px; padding: 4px 14px; animation: ui-in 0.4s var(--ui-ease) both; }
+.settings .group:nth-of-type(2) { animation-delay: 40ms; } .settings .group:nth-of-type(3) { animation-delay: 80ms; } .settings .group:nth-of-type(n+4) { animation-delay: 120ms; }
+.settings .group h3 { margin: 10px 0 0; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.settings .ui-row { padding: 11px 0; gap: 12px; cursor: default; }
+.settings .ui-row.stack { flex-wrap: wrap; }
+.settings .ui-row.stack .range { flex-basis: 100%; display: flex; align-items: center; gap: 10px; }
+.settings .ui-row.stack input[type=range] { flex: 1; width: auto; }
+.settings .ui-row > .label small:empty { display: none; }
+.settings select { min-width: 150px; }
 .settings select option { background: #232838; }
-.seg { display: inline-flex; gap: 3px; background: rgba(255, 255, 255, 0.08); padding: 3px; border-radius: 999px; width: max-content; }
-.seg button { font: inherit; color: var(--ink); background: transparent; border: 0; border-radius: 999px; padding: 4px 12px; cursor: pointer; }
-.seg button.on { background: var(--accent); color: #0d1020; }
-input[type='checkbox'], input[type='range'] { accent-color: var(--accent); }
+.settings .ui-seg button.on { background: var(--accent); color: #0d1020; box-shadow: none; }
 .sub { display: block; margin-bottom: 6px; }
-.hidden-list { display: grid; gap: 6px; }
-.hidden-list div { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-.hidden-list button { padding: 3px 10px; font-size: 12px; }
-.s-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.s-actions .ghost { background: transparent; }
+.hidden-list { display: grid; padding: 8px 0 10px; }
+.hidden-list div { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; }
+.hidden-list div + div { border-top: 1px solid rgba(255, 255, 255, 0.06); }
+.hidden-list button { font: inherit; font-size: 12px; font-weight: 600; color: var(--ink); background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 999px; padding: 3px 10px; cursor: pointer; }
+.hidden-list .hint { padding: 2px 0; }
+.s-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.s-actions .ui-btn { color: var(--ink); background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.12); font-size: 13px; padding: 8px 10px; }
+.settings .quit { align-self: center; color: var(--muted); font-size: 12.5px; margin-top: auto; }
 .hint { color: var(--muted); font-size: 12.5px; margin: 0; }
 #results > div { width: 100%; }
