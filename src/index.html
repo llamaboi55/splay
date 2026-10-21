@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Splay</title>
   <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="css/ui.css">
   <link rel="stylesheet" href="css/app.css">
+  <script src="js/ui.js" defer></script>
 </head>
 <body>
   <div id="backdrop"></div>
@@ -35,42 +37,71 @@
   <div id="toast" class="toast" hidden></div>
 
   <aside id="settings" class="settings" hidden>
-    <header><b>Splay</b><button id="s-close" class="x" aria-label="Close">✕</button></header>
-    <label>Shortcut
-      <select id="s-shortcut">
-        <option>Ctrl+Alt+Space</option>
-        <option>Alt+Shift+Space</option>
-        <option>Ctrl+Shift+Space</option>
-        <option>Alt+Space</option>
-        <option>F4</option>
-      </select>
-    </label>
-    <p class="hint" id="s-shortcut-note"></p>
-    <label>Icon size
-      <span class="seg" id="s-size"><button data-v="s">Small</button><button data-v="m">Medium</button><button data-v="l">Large</button></span>
-    </label>
-    <label>Background <input type="range" id="s-dim" min="0.35" max="0.95" step="0.05"></label>
-    <label class="check"><input type="checkbox" id="s-labels"> Show app names</label>
-    <label>Web search
-      <select id="s-engine">
-        <option value="duckduckgo">DuckDuckGo</option>
-        <option value="google">Google</option>
-        <option value="bing">Bing</option>
-        <option value="brave">Brave Search</option>
-        <option value="startpage">Startpage</option>
-      </select>
-    </label>
-    <label class="check" id="s-auto-wrap"><input type="checkbox" id="s-auto"> Start with my computer</label>
-    <div>
-      <b class="sub">Hidden apps</b>
+    <header>
+      <img src="icon.png" alt="">
+      <div><b>Splay</b><small>Your apps, all on one screen</small></div>
+      <button id="s-close" class="x" aria-label="Close">✕</button>
+    </header>
+
+    <section class="group">
+      <h3>Opening</h3>
+      <div class="ui-row">
+        <div class="label"><b>Shortcut</b><small id="s-shortcut-note"></small></div>
+        <select id="s-shortcut">
+          <option>Ctrl+Alt+Space</option>
+          <option>Alt+Shift+Space</option>
+          <option>Ctrl+Shift+Space</option>
+          <option>Alt+Space</option>
+          <option>F4</option>
+        </select>
+      </div>
+      <label class="ui-row" id="s-auto-wrap">
+        <span class="label"><b>Start with my computer</b><small>Ready the moment you sign in</small></span>
+        <input type="checkbox" id="s-auto">
+      </label>
+    </section>
+
+    <section class="group">
+      <h3>Look</h3>
+      <div class="ui-row">
+        <div class="label"><b>Icon size</b></div>
+        <span class="ui-seg" id="s-size"><button data-v="s">Small</button><button data-v="m">Medium</button><button data-v="l">Large</button></span>
+      </div>
+      <div class="ui-row stack">
+        <div class="label"><b>Background</b><small>How much the desktop behind fades</small></div>
+        <div class="range"><input type="range" id="s-dim" min="0.35" max="0.95" step="0.05" data-format="pct"><output for="s-dim"></output></div>
+      </div>
+      <label class="ui-row">
+        <span class="label"><b>Show app names</b></span>
+        <input type="checkbox" id="s-labels">
+      </label>
+    </section>
+
+    <section class="group">
+      <h3>Search</h3>
+      <div class="ui-row">
+        <div class="label"><b>Web search</b><small>When nothing on your computer matches</small></div>
+        <select id="s-engine">
+          <option value="duckduckgo">DuckDuckGo</option>
+          <option value="google">Google</option>
+          <option value="bing">Bing</option>
+          <option value="brave">Brave Search</option>
+          <option value="startpage">Startpage</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="group">
+      <h3>Hidden apps</h3>
       <div id="s-hidden" class="hidden-list"></div>
-    </div>
+    </section>
+
     <div class="s-actions">
-      <button id="s-rescan">Look for new apps</button>
-      <button id="s-reset">Sort everything A to Z</button>
-      <button id="s-quit" class="ghost">Quit Splay</button>
+      <button id="s-rescan" class="ui-btn">Look for new apps</button>
+      <button id="s-reset" class="ui-btn">Sort everything A to Z</button>
     </div>
     <p class="hint">Drag an app onto another to make a folder. Right-click for more, like groups that open several apps at once.</p>
+    <button id="s-quit" class="ui-link quit">Quit Splay</button>
   </aside>
 
   <script type="module" src="js/app.js"></script>
