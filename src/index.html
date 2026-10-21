@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Splay</title>
+  <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div id="backdrop"></div>
+  <main id="main">
+    <div class="search-wrap">
+      <input id="q" type="search" placeholder="Search apps, or type a sum" autocomplete="off" spellcheck="false" aria-label="Search apps">
+    </div>
+    <div id="calc" class="calc" hidden></div>
+    <div id="viewport">
+      <div id="pages"></div>
+      <div id="results" hidden></div>
+    </div>
+    <div id="dots"></div>
+    <button id="gear" class="gear" title="Settings" aria-label="Settings">⚙</button>
+  </main>
+
+  <div id="panel" class="panel" hidden>
+    <div class="panel-card">
+      <input id="panel-title" class="panel-title" maxlength="40" aria-label="Name">
+      <p id="panel-hint" class="panel-hint"></p>
+      <div id="panel-grid" class="grid"></div>
+      <div id="panel-actions" class="panel-actions"></div>
+    </div>
+  </div>
+
+  <div id="menu" class="menu" hidden></div>
+  <div id="toast" class="toast" hidden></div>
+
+  <aside id="settings" class="settings" hidden>
+    <header><b>Splay</b><button id="s-close" class="x" aria-label="Close">✕</button></header>
+    <label>Shortcut
+      <select id="s-shortcut">
+        <option>Ctrl+Alt+Space</option>
+        <option>Alt+Shift+Space</option>
+        <option>Ctrl+Shift+Space</option>
+        <option>Alt+Space</option>
+        <option>F4</option>
+      </select>
+    </label>
+    <p class="hint" id="s-shortcut-note"></p>
+    <label>Icon size
+      <span class="seg" id="s-size"><button data-v="s">Small</button><button data-v="m">Medium</button><button data-v="l">Large</button></span>
+    </label>
+    <label>Background <input type="range" id="s-dim" min="0.35" max="0.95" step="0.05"></label>
+    <label class="check"><input type="checkbox" id="s-labels"> Show app names</label>
+    <label>Web search
+      <select id="s-engine">
+        <option value="duckduckgo">DuckDuckGo</option>
+        <option value="google">Google</option>
+        <option value="bing">Bing</option>
+        <option value="brave">Brave Search</option>
+        <option value="startpage">Startpage</option>
+      </select>
+    </label>
+    <label class="check" id="s-auto-wrap"><input type="checkbox" id="s-auto"> Start with my computer</label>
+    <div>
+      <b class="sub">Hidden apps</b>
+      <div id="s-hidden" class="hidden-list"></div>
+    </div>
+    <div class="s-actions">
+      <button id="s-rescan">Look for new apps</button>
+      <button id="s-reset">Sort everything A to Z</button>
+      <button id="s-quit" class="ghost">Quit Splay</button>
+    </div>
+    <p class="hint">Drag an app onto another to make a folder. Right-click for more, like groups that open several apps at once.</p>
+  </aside>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
